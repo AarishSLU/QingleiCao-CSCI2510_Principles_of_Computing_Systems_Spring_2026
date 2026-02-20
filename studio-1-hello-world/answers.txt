@@ -1,0 +1,26 @@
+2: #include <stdio.h>
+3: fprintf takes an extra first argument (a FILE* stream). printf always prints to stdout implicitly.
+4: printf prints to standard output (stdout), while fprintf prints to a specified stream such as stdout, stderr, or a file.
+5: Hello, world! (from fprintf)
+7: system calls are in section 2
+8: #include <unistd.h>
+9:
+
+11:
+    // Aarish
+    // 2026/02/19
+
+    #include <unistd.h>
+
+    int main(int argc, char* argv[]){
+        const char msg[] = "Hello, world! (from write)\n";
+        write(STDOUT_FILENO, msg, sizeof(msg) - 1);
+        return 0;
+    }
+
+10: If the length argument is much larger than the actual buffer, write() will try to output extra bytes from memory after the string. This can print garbage characters (random memory contents) and in some cases may crash, because write() does not know the real string length and does no bounds checking.
+
+11 (library vs syscall): Use a C library function when you want portability and convenience (formatting, buffering, easy strings), so the same code works across different systems.
+Use an OS system call when you need low-level control or OS-specific features (working directly with file descriptors, exact bytes, process/pipe features, performance control).
+
+12: Running ./hello.sh prints: Hello World!

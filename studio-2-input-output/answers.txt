@@ -1,0 +1,31 @@
+CSCI 2510 - Studio: Input/Output
+
+1) cat behavior:
+When I run `cat` with no arguments, it waits for keyboard input and echoes each line back to the terminal. It stops when I send EOF with Ctrl-D.
+
+2) cat < mars.txt behavior:
+`cat` reads from mars.txt instead of the keyboard and prints the file contents to the terminal.
+
+3) cat < mars.txt > new.txt behavior:
+The contents of mars.txt are copied into new.txt (stdout is redirected), so nothing prints to the terminal. new.txt contains the same text as mars.txt.
+
+4) cat > new.txt behavior:
+`cat` takes my keyboard input and writes it into new.txt. Using `>` overwrites/truncates the file, replacing its previous contents.
+
+5) cat >> new.txt behavior:
+Using `>>` appends instead of overwriting. Running it multiple times keeps adding new lines to the end of new.txt.
+
+6) Header for read()/write():
+#include <unistd.h>
+
+7) read() return type and EOF value:
+read() returns ssize_t. EOF is indicated when read() returns 0.
+
+8) copy.c matches cat behavior:
+Yes. It echoes interactive input, works with input redirection (./copy < mars.txt), and works with output redirection (./copy < mars.txt > out.txt).
+
+9) bufferSize experiments:
+Changing bufferSize did not change correctness as long as I write only the number of bytes returned by read(). It worked for very small sizes (including 1), but smaller sizes required many more read/write calls and was slower.
+
+10) Tradeoff small vs large buffer:
+Small buffer = more system calls, slower, but minimal memory. Large buffer = fewer system calls, faster, but uses more memory per buffer (and copies larger chunks at a time).

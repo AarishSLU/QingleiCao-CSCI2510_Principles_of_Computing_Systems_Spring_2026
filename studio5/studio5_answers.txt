@@ -1,0 +1,44 @@
+CSCI 2510 Studio 5 Answers
+
+1.
+My PID is: 4751
+My PID is: 4752
+My PID is: 4753
+
+2.
+My PID is: 4820
+My PID is: 4821
+
+When fork() was added, the program printed two PIDs instead of one because both the parent and child processes continued running the program.
+
+3.
+The fork() function returns 0 in the child process, the child process PID in the parent process, and -1 if the fork fails.
+
+4.
+Parent process PID: 4835
+Child process PID: 4836
+
+5.
+Parent process PID: 4871
+Child process PID: 4872
+
+The parent process printed first, and then the child process printed about three seconds later. This happened because the child process executed sleep(3), while the parent continued immediately without waiting.
+
+6.
+Child process PID: 4885
+Parent process PID: 4884
+
+With waitpid(), the parent waits for the child process to finish before printing. Because of that, the child process prints first and the parent prints after.
+
+7.
+total 20
+-rwxr-xr-x 1 aarish aarish 16128 Mar 26 23:31 fork
+-rw-r--r-- 1 aarish aarish   325 Mar 26 23:31 fork.c
+-rw-r--r-- 1 aarish aarish     0 Mar 26 23:06 studio5_answers.txt
+
+8.
+total 20
+-rwxr-xr-x 1 aarish aarish 16224 Mar 26 23:32 fork
+-rw-r--r-- 1 aarish aarish   460 Mar 26 23:32 fork.c
+-rw-r--r-- 1 aarish aarish     0 Mar 26 23:06 studio5_answers.txt
+Parent process PID: 4902

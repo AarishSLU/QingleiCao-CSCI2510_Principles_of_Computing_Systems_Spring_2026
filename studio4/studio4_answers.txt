@@ -1,0 +1,83 @@
+CSCI 3500 Studio 4 Answers
+
+1. Working code:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return -1;
+    }
+
+    int fd = open(argv[1], O_RDONLY);
+
+    if (fd == -1) {
+        perror("Error opening file");
+        return -1;
+    }
+
+    char buffer[1024];
+    ssize_t bytes_read;
+
+    while ((bytes_read = read(fd, buffer, sizeof(buffer))) > 0) {
+        write(STDOUT_FILENO, buffer, bytes_read);
+    }
+
+    close(fd);
+    return 0;
+}
+
+2. What happens when the file does not exist?
+The program is not able to open the file. Without proper error checking, it would fail and not clearly explain what went wrong.
+
+3. What happens with perm.txt after chmod -rw perm.txt?
+The file cannot be opened because the permissions were removed. In my terminal it showed a permission denied message.
+
+4. What value does open() return on error?
+open() returns -1 on error.
+
+5. Conditional used to check for error:
+if (fd == -1)
+
+6. perror() call used:
+perror("Error opening file");
+
+7.
+
+
+8. What happens when the file does not exist now?
+The program prints:
+Error opening file: No such file or directory
+Then it exits gracefully.
+
+9. What happens with perm.txt now?
+The terminal showed:
+-bash: perm.txt: Permission denied
+Error opening file: Permission denied
+
+So the file could not be opened because of its permissions, and the program printed the error and exited gracefully.
+
+10. Error return values and errno:
+
+open():
+Returns -1 on error and sets errno.
+
+close():
+Returns -1 on error and sets errno.
+
+read():
+Returns -1 on error and sets errno.
+
+write():
+Returns -1 on error and sets errno.
+
+printf():
+Returns a negative value on error. It may also set errno.
+
+11. Give two reasons why error checking simplifies software development.
+Error checking makes it easier to debug programs because it shows exactly where something failed.
+It also makes programs more reliable because they can stop safely and print a useful message instead of crashing or behaving unpredictably.

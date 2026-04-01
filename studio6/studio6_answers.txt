@@ -1,0 +1,53 @@
+CSCI 2510 Studio 6 Answers
+
+1.
+Enter input: This is an input string.
+This is an input string.
+
+2.
+The first call to strtok() uses the original string you want to parse. After that, later calls use NULL as the first argument so strtok() continues parsing the same string.
+
+3.
+For regular text input, the delimiter should usually be a space character: " "
+
+4.
+Enter input: This is an input string.
+This
+
+5.
+Enter input: This is an input string.
+This
+is
+an
+input
+string.
+
+6.
+buffer[strcspn(buffer, "\n")] = '\0';
+
+7.
+
+
+8.
+cmd = strtok(buffer, " ");
+
+9.
+my_argv[0] = cmd;
+
+int i = 1;
+char* res = strtok(NULL, " ");
+
+while (res != NULL && i < max_argv_size - 1) {
+    my_argv[i] = res;
+    i++;
+    res = strtok(NULL, " ");
+}
+
+my_argv[i] = '\0';
+
+10.
+Enter input: ls -l
+total 20
+-rwxr-xr-x 1 aarish aarish 16224 Mar 31 22:56 parse
+-rw-r--r-- 1 aarish aarish   755 Mar 31 22:56 parse.c
+-rw-r--r-- 1 aarish aarish     0 Mar 31 22:36 studio6_answers.txt

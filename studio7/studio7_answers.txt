@@ -1,0 +1,67 @@
+CSCI 2510 Studio 7 Answers
+
+1. Program 1 and Program 2:
+
+print.c
+#include <stdio.h>
+
+int main() {
+    printf("Program 1 output line\n");
+    return 0;
+}
+
+input.c
+#include <stdio.h>
+
+int main() {
+    char buffer[1024];
+
+    while (1) {
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            break;
+        }
+
+        printf("Program 2 got: %s\n", buffer);
+    }
+
+    return 0;
+}
+
+2. Output from running Program 1 and Program 2:
+
+./print
+Program 1 output line
+
+./input
+hello
+Program 2 got: hello
+
+3. Output from the first version of pipe.c before connecting the pipe:
+The program did not terminate correctly because Program 2 was waiting for input and never received end-of-file. It had to be stopped with CTRL-C.
+
+4. Which end of fd[2] is read and which is write?
+fd[0] is the read end of the pipe.
+fd[1] is the write end of the pipe.
+
+5. In dup2(oldfd, newfd), which argument is closed and replaced when dup2 succeeds?
+The second argument is closed and replaced when dup2() succeeds.
+
+6. dup2() code used:
+
+dup2(fd[1], STDOUT_FILENO);
+close(fd[0]);
+close(fd[1]);
+
+dup2(fd[0], STDIN_FILENO);
+close(fd[1]);
+close(fd[0]);
+
+7. Output after connecting Program 1 to Program 2 with the pipe:
+Program 2 got: Program 1 output line
+
+8. Output after closing the unused pipe ends so the program terminates correctly:
+Program 2 got: Program 1 output line
+
+9. Give two advantages to stream ambiguity:
+One advantage is that programs can be reused more easily, because they do not need to know whether their input or output is coming from the keyboard, a file, or another program.
+Another advantage is that the operating system can connect programs together flexibly, which makes it easier to build more complex behavior from smaller simple programs.

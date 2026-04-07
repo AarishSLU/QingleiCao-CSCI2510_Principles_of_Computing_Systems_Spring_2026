@@ -1,0 +1,61 @@
+CSCI 2510 Studio 8 Answers
+
+1. Output from running sleep.c:
+
+aarish@AarishNitro:~/csci2510/studio8$ ./sleep
+Sleeper's PID is: 17659
+Slept for 0 iterations!
+Slept for 1 iterations!
+Slept for 2 iterations!
+Slept for 3 iterations!
+Slept for 4 iterations!
+
+2. SIGINT has numeric value 2.
+The associated comment is: Interrupt.
+
+3. What happened when SIGINT was sent with kill?
+The sleeper process terminated immediately. The printing stopped suddenly with no other message.
+
+4. Another signal tested:
+I used SIGTERM, which is signal 15.
+When I sent it to the sleeper process, terminal 1 stopped printing and said "Terminated".
+
+5. What happened when call_sleeper was run and interrupted with CTRL-C?
+When I ran call_sleeper and pressed CTRL C, both the sleeper and the caller terminated. The caller did not print its success message.
+
+Output:
+aarish@AarishNitro:~/csci2510/studio8$ ./call_sleeper
+Forking sleeper...
+Waiting for sleeper 17731...
+Sleeper's PID is: 17731
+Slept for 0 iterations!
+Slept for 1 iterations!
+Slept for 2 iterations!
+^C
+aarish@AarishNitro:~/csci2510/studio8$
+
+6. Signal handling code:
+
+void ignore_sigint(int signum) {
+    printf("\nIgnoring SIGINT in caller.\n");
+}
+
+signal(SIGINT, ignore_sigint);
+
+7. Output after adding the signal handler:
+
+aarish@AarishNitro:~/csci2510/studio8$ ./call_sleeper
+Forking sleeper...
+Waiting for sleeper 17801...
+Sleeper's PID is: 17801
+Slept for 0 iterations!
+Slept for 1 iterations!
+Slept for 2 iterations!
+Slept for 3 iterations!
+^C
+Ignoring SIGINT in caller.
+Parent finished waiting and returned successfully!
+aarish@AarishNitro:~/csci2510/studio8$
+
+8. Another situation where signal handling might be useful:
+Signal handling could be useful when a server needs to reload its configuration without fully shutting down. A signal could notify the program to reload settings or reopen log files while it keeps running.

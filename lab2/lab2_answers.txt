@@ -1,0 +1,7 @@
+CSCI 2510 Lab 2 Answers
+
+1. Describe any known bugs or ways that your submission deviates from the above specification.
+No major known bugs. The shell supports built-in cd, execution of normal commands, pipelines using the backwards syntax with (, EOF exit, and basic Ctrl+C handling. It assumes a maximum input length of 256 characters and at most 15 arguments per command. It does not support advanced shell features such as quoting, escaping, background execution, or environment variable expansion.
+
+2. Indicate which, if any, extra credit exercises you have attempted.
+None.

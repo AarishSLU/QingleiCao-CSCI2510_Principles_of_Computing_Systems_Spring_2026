@@ -1,0 +1,46 @@
+CSCI 2510 Studio 9 Answers
+
+1. The thread entry function should have return type void* and it should take a single argument of type void*.
+
+2. The function thread_entry was written with the correct signature and prints a message before returning NULL.
+
+3. Program output for creating and joining one thread:
+
+Hello from the thread!
+Thread joined successfully.
+
+4. Struct definition:
+
+struct thread_args {
+    int arg1;
+    char arg2[100];
+    int ret;
+};
+
+5. Program output after passing struct arguments to the thread:
+
+thread arg1: 42
+thread arg2: Hello from main
+main read ret: 84
+
+6. The thread wrote a value to the ret member of the struct, and the main function read that value after pthread_join() returned.
+
+7. Program output for five threads:
+
+thread arg1: 0
+thread arg2: This is thread 0
+thread arg1: 1
+thread arg2: This is thread 1
+thread arg1: 2
+thread arg2: This is thread 2
+thread arg1: 3
+thread arg2: This is thread 3
+thread arg1: 4
+thread arg2: This is thread 4
+main saw ret from thread 0: 0
+main saw ret from thread 1: 2
+main saw ret from thread 2: 4
+main saw ret from thread 3: 6
+main saw ret from thread 4: 8
+
+8. When I ran the program multiple times, I noticed that the output ordering of the threads was not always the same. In one run the threads printed in order, but in another run they printed in a different order such as 1, 3, 2, 0, 4. I think this happens because threads run concurrently and the operating system scheduler decides when each thread gets CPU time.

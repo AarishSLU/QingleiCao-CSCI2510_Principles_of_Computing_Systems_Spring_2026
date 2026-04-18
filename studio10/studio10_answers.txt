@@ -1,0 +1,85 @@
+CSCI 2510 Studio 10 Answers
+
+1. Copy and paste these functions.
+
+int race = 0;
+int iterations = 2000000;
+
+void* adder(void* arg) {
+    for (int i = 0; i < iterations; i++) {
+        race++;
+    }
+    return NULL;
+}
+
+void* subtractor(void* arg) {
+    for (int i = 0; i < iterations; i++) {
+        race--;
+    }
+    return NULL;
+}
+
+2. What happens if these functions are executed directly in main()?
+I thought the final value would be 0, because the adder adds the same amount that the subtractor subtracts. When I tested it directly in main(), the final value of race was 0.
+
+Program output:
+Final value of race: 0
+
+3. What do you think will happen if these two functions are executed simultaneously by two different threads? What specific value do you think the variable race would have?
+If the operations were perfectly synchronized, I would expect the final value of race to be 0. However, because both threads are changing the same shared variable at the same time, I expected a race condition and thought the result might not always be 0.
+
+4. What is the result when each function is executed concurrently by its own thread? Copy and paste several executions of your program.
+
+Final value of race: -294961
+Final value of race: 524589
+Final value of race: 345484
+Final value of race: -314
+Final value of race: -665649
+
+5. Can you explain the program's behavior? What do you think the maximum or minimum value could ever be?
+The program behaves this way because race++ and race-- are not atomic operations. Each one involves reading the value, changing it, and writing it back. If both threads do this at the same time, one update can overwrite the other, which causes lost updates and gives a wrong final answer.
+
+A reasonable maximum value would be 2000000 if almost all of the subtractor's updates were lost, and a reasonable minimum value would be -2000000 if almost all of the adder's updates were lost.
+
+6. Does your program still exhibit this behavior with fewer iterations?
+Yes. With 1000000 iterations, the race still happened and the values were still incorrect.
+Examples:
+Final value of race: 576941
+Final value of race: -365248
+Final value of race: -376878
+Final value of race: -497467
+
+With 500000 iterations, the race still happened.
+Examples:
+Final value of race: -24719
+Final value of race: -345533
+Final value of race: 45103
+
+With 1000 iterations, when I ran it several times, the final value was 0 each time:
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+
+So with very small iteration counts, the race condition did not show up in my runs.
+
+7. Could your race condition still exhibit itself if your machine had only one processor core? Why or why not?
+Yes. Even on one processor core, threads can still be interleaved by the scheduler. That means one thread can be interrupted in the middle of updating the shared variable, and the other thread can run before the first finishes. Because of that, the race condition can still happen on one core.
+
+8. What happens when the program is restricted to one processor core with taskset -c 0 ./race_program?
+When I ran the program on one core with two million iterations, I got:
+Final value of race: 2000000
+Final value of race: 2000000
+Final value of race: 0
+
+So the race condition still appeared, even on one core.
+
+9. What happens when each function performs 200,000,000 operations and the program is run on one processor core?
+When I changed the program to 200000000 iterations and ran it on one core, I got:
+Final value of race: 44082782
+Final value of race: -66866485
+Final value of race: 83151768
+
+10. Give a reasonable explanation of the behavior in the previous exercise.
+Even on one core, the two threads are still being switched back and forth by the scheduler. Since the updates to the shared variable are not atomic, many increments and decrements are lost. With 200,000,000 operations, there are many more chances for this interleaving to happen, so the race condition becomes very obvious and the final value can be far from 0.

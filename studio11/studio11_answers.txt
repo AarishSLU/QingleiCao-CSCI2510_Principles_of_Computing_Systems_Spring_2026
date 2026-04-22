@@ -1,0 +1,89 @@
+CSCI 2510 Studio 11 Answers
+
+1. Copy and paste your mutex creation code.
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+2.
+
+
+3. What do you think the result will be if you synchronize your accesses? What will be the numeric value? How will this effect the amount of time your program takes to run?
+
+If the accesses are synchronized correctly, I expected the final value of race to always be 0, because the adder and subtractor each perform the same number of operations. I also expected the program to take longer to run, because locking and unlocking a mutex adds overhead.
+
+4. Run your program many times. Does your program output match your expectations? Copy and paste several program outputs.
+
+Yes. The output matched my expectations, and the final value was always 0.
+
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+Final value of race: 0
+
+5. Take three timings of the original racy program with twenty million iterations. Copy and paste your program output, and calculate the average time.
+
+Run 1:
+Final value of race: 1218672
+real    0m0.082s
+
+Run 2:
+Final value of race: -2745028
+real    0m0.093s
+
+Run 3:
+Final value of race: -141658
+real    0m0.094s
+
+Average real time:
+(0.082 + 0.093 + 0.094) / 3 = 0.0897 seconds
+Average ≈ 0.090 seconds
+
+6. Take three timings with the mutex locked and unlocked once per increment/decrement. Copy and paste your program output, compute the average, and explain how much longer it took.
+
+Run 1:
+Final value of race: 0
+real    0m2.441s
+
+Run 2:
+Final value of race: 0
+real    0m2.713s
+
+Run 3:
+Final value of race: 0
+real    0m2.666s
+
+Average real time:
+(2.441 + 2.713 + 2.666) / 3 = 2.6067 seconds
+Average ≈ 2.607 seconds
+
+This took about 2.517 seconds longer than the original racy program on average.
+
+7. Take three timings with the mutex locked and unlocked once per thread. Copy and paste your program output. How does this compare to the original racy program?
+
+Run 1:
+Final value of race: 0
+real    0m0.101s
+
+Run 2:
+Final value of race: 0
+real    0m0.101s
+
+Run 3:
+Final value of race: 0
+real    0m0.101s
+
+Average real time:
+(0.101 + 0.101 + 0.101) / 3 = 0.101 seconds
+
+This is only slightly slower than the original racy program, which averaged about 0.090 seconds.
+
+8. Speculate about what might cause the results from the previous exercise.
+
+Locking and unlocking the mutex once per iteration adds a huge amount of overhead, because the program has to perform millions of mutex operations. When the mutex is only locked once per thread, there are only two lock/unlock operations total, so the overhead is much smaller. That is why the per-thread locking version is much faster.
+
+10. Think of an example of where the first, per-iteration locking strategy might be more appropriate. Where might the second, per-thread locking strategy be more appropriate?
+
+Per-iteration locking would be more appropriate when threads need to frequently share and update the same data safely, such as updating a shared bank balance or shared counter where each individual update must be protected.
+
+Per-thread locking would be more appropriate when each thread needs exclusive access for a larger block of work, such as processing a whole section of shared data before letting another thread use it.

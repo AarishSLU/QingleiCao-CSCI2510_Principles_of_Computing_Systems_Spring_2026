@@ -1,0 +1,114 @@
+CSCI 2510 Crack Lab Answers
+
+1. Name:
+Aarish Naumaan
+
+2. What four-letter password corresponds to the target 'abccBcrPOxnLU'?
+pass
+
+3. What five-letter password corresponds to the target 'xyxMB6gxuiBZg'?
+ferry
+
+4. Time to exhaust the five-letter keyspace with one thread (nomatchingpass):
+
+real    0m39.604s
+
+5. Times with multiple threads:
+
+2 threads:
+real    0m20.701s
+
+4 threads:
+real    0m11.432s
+
+8 threads:
+real    0m6.702s
+
+13 threads:
+real    0m4.663s
+
+26 threads:
+real    0m4.341s
+
+6. Hash rates:
+
+Total hashes for keysize 5:
+26^5 = 11,881,376
+
+1 thread:
+11,881,376 / 39.604 ≈ 300,000 hashes/sec
+
+2 threads:
+11,881,376 / 20.701 ≈ 574,000 hashes/sec
+
+4 threads:
+11,881,376 / 11.432 ≈ 1,039,000 hashes/sec
+
+8 threads:
+11,881,376 / 6.702 ≈ 1,772,000 hashes/sec
+
+13 threads:
+11,881,376 / 4.663 ≈ 2,548,000 hashes/sec
+
+26 threads:
+11,881,376 / 4.341 ≈ 2,737,000 hashes/sec
+
+7. Interpretation:
+
+The program gets faster as more threads are used, but the speedup is not perfectly linear. For example, doubling the number of threads does not always cut the runtime in half. This is because of overhead from thread management, scheduling, and limited CPU cores. As the number of threads increases, the performance improvement begins to level off.
+
+8. Maximum hash rate:
+
+≈ 2,737,000 hashes per second (with 26 threads)
+
+9. Total hashes for key sizes 1 through 8:
+
+26^1 = 26  
+26^2 = 676  
+26^3 = 17,576  
+26^4 = 456,976  
+26^5 = 11,881,376  
+26^6 = 308,915,776  
+26^7 = 8,031,810,176  
+26^8 = 208,827,064,576  
+
+Total = 217,179,141,158 hashes
+
+10. Estimated time to exhaust each keyspace at max rate:
+
+Using ~2,737,000 hashes/sec:
+
+Length 1: negligible  
+Length 2: negligible  
+Length 3: negligible  
+Length 4: ~0.17 seconds  
+Length 5: ~4.3 seconds (matches experiment)  
+Length 6: ~113 seconds (~1.9 minutes)  
+Length 7: ~2,934 seconds (~49 minutes)  
+Length 8: ~76,300 seconds (~21 hours)
+
+Increasing key length greatly increases time because the keyspace grows exponentially.
+
+11. Estimated time for 6-character passwords with larger alphabets:
+
+Lowercase only (26):
+26^6 = 308,915,776 → ~113 seconds
+
+Upper + lower (52):
+52^6 = 19,770,609,664 → ~7,220 seconds (~2 hours)
+
+Alphanumeric (62):
+62^6 = 56,800,235,584 → ~20,750 seconds (~5.8 hours)
+
+Full keyboard (93):
+93^6 = 646,990,183,449 → ~236,400 seconds (~65 hours)
+
+Larger alphabets dramatically increase cracking time.
+
+12. Known bugs or deviations:
+
+No known major bugs. The program correctly searches lowercase passwords from length 1 to keysize, uses crypt_r() for thread safety, and divides work among threads. It stops immediately when a password is found.
+
+13. Extra credit attempted:
+
+None.
